@@ -1,0 +1,80 @@
+%:
+\documentclass[11pt, oneside]{article}   	% use "amsart" instead of "article" for AMSLaTeX format
+\usepackage{geometry}                		% See geometry.pdf to learn the layout options. There are lots.
+\geometry{letterpaper}                   		% ... or a4paper or a5paper or ... 
+%\geometry{landscape}                		% Activate for rotated page geometry
+%\usepackage[parfill]{parskip}    		% Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{graphicx}				% Use pdf, png, jpg, or eps§ with pdflatex; use eps in DVI mode
+								% TeX will automatically convert eps --> pdf in pdflatex		
+\usepackage{amssymb}
+\usepackage{diagbox}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{enumerate}
+\theoremstyle{definition}
+\newtheorem*{defn}{Definition}
+\newtheorem*{prop}{Proposition}
+\newtheorem*{eg}{Example}
+\newtheorem*{thm}{Theorem}
+\newtheorem*{corol}{Corollary}
+\newtheorem{ex}{Exercise}[section]
+{\theoremstyle{plain}
+\newtheorem*{rmk}{Remark}
+\newtheorem*{rmks}{Remarks}
+\newtheorem*{lt}{Last time}
+}
+\newtheorem*{lem}{Lemma}
+\usepackage{color}
+\usepackage{CJK}
+\title{Theoretical Foundation for AI Alignment}
+\author{Xiyu Zhai, Alexander Rakhlin}
+\date{}							% Activate to display a given date or no date
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+\abstract{This paper attempts to build a theoretical foundation for AI alignment based on statistical and machine learning theory, type theory and logic. We extend upon type systems from formal verifications to form a more powerful framework than knowledge graph that will be able to systematically verify natural language outputs produced by AIs. As AIs are getting stronger and stronger, it's imperative that all human beings should unite to produce such systems for a guaranteed alignment of AIs with human values. In the future, we shall have truly safe AIs that generates verifiable "proofs" alongside any statements they make.}
+
+\section{Introduction}
+
+Human can never fully trust large language models as much as they can trust traditional software. The reason is simple: they just have too many parameters!
+
+From machine learning theory, when test error is close to zero, we have the generalization bound being of form
+
+\begin{equation}
+	O\left(\frac{\sqrt{d}}{n}\right).
+\end{equation}
+
+Suppose we want the error is to be smaller than $\epsilon$, then
+
+\begin{equation}
+	n\ge \Omega(\sqrt{d}/\epsilon)
+\end{equation}
+
+When $\sqrt{d}$ is large, and $\epsilon$ is very small, we need an enormous amount of data for guarantees. GPT3.5 have 175billion parameters, let's assume that the effective VC dimension is much smaller, say 10billion, and $\epsilon$ is taken to be $10^{-4}/N$ where $N$ is the number of users, then we need more than N billion number of data and it becomes unrealistically large when $N$ is reasonably large. ($\epsilon$ is really needed to be that small for broader usage of AI in real life, dealing with adversarial attacks, corner cases)
+
+In contrast, traditional software are much more stable, despite the fact that they might be built from billions of lines of code. There are multiple ways to guarantee soundness for traditional software:
+
+\begin{itemize}
+	\item formal verification. This is tedious to do but when done completely guarantee correctness (unless the verifier itself is buggy, which is very unlikely because verifier can be written using a very small amount of code). \textit{In contrast, deep learning weights cannot be proved to be correct.}
+	\item type system. Compilers do some sketchy checking so that many of the errors are prevented at compile time. \textit{In contrast, deep learning weights are only constraint by the architecture (weight sharing) and have universal approximation property, meaning they can approximate both angles and demons.}
+	\item modularity. Modern software is written in modular ways, allowing the ultimate accuracy to be dependent only on a few critical components rather than the whole system. And when something goes wrong, it's possible to backtrace to a few expressions among the billions of lines of code. \textit{In contrast, deep learning is trained end-to-end, every weight contributes to the final result, leading to large generalization gap and making it impossible to backtrace}.
+\end{itemize}
+
+In this paper, we intend to close this gap of reliability between AI and traditional software by inventing a verification system that is a database of rules that is learnable, modular and incorporate traditional type system and formal verification, knowledge graph and neural symbolic ones. Generate AIs can have guaranteed soundness by providing a sequence of rule application alongside its normal output. It still belongs to system 1, and corresponds to both our intuitive judgment of whether something makes sense. It might be possible that system 2 is the interaction process between generative AI and a verifier system. We shall focus on these aspects in this paper:
+\begin{itemize}
+	\item Details about verification process, how it extends traditional formal verification, knowledge graph and expressive enough to verify natural language.
+	\item Statistical guarantees. A verification system needs to be constantly modified after bugs are found. We apply statistical and machine learning theory to argue the correctness is still guaranteed after modification.
+	\item Development/Training. We discuss the optimal way to construct such a verification system. Lessons from expert system tell us scalability is essential. We propose multiple ways of construction that take minimal human labor (but maybe more AI labor), and easy to update and maintain (could be some form of gradient descent, etc.)
+\end{itemize}
+
+\section{A Permissive Logical Foundation Easy to Verify}
+
+
+
+\section{}
+
+
+
+\end{document}
