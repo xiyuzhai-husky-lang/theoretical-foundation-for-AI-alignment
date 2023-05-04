@@ -11,6 +11,8 @@
 \usepackage{amsmath}
 \usepackage{amsthm}
 \usepackage{enumerate}
+\usepackage{color}
+\usepackage{CJK}
 \theoremstyle{definition}
 \newtheorem*{defn}{Definition}
 \newtheorem*{prop}{Proposition}
@@ -24,8 +26,7 @@
 \newtheorem*{lt}{Last time}
 }
 \newtheorem*{lem}{Lemma}
-\usepackage{color}
-\usepackage{CJK}
+\def\code#1{\texttt{#1}}
 \title{Theoretical Foundation for AI Alignment}
 \author{Xiyu Zhai, Alexander Rakhlin}
 \date{}							% Activate to display a given date or no date
@@ -37,6 +38,8 @@
 \abstract{This paper attempts to build a theoretical foundation for AI alignment based on statistical and machine learning theory, type theory and logic. We extend upon type systems from formal verifications to form a more powerful framework than knowledge graph that will be able to systematically verify natural language outputs produced by AIs. As AIs are getting stronger and stronger, it's imperative that all human beings should unite to produce such systems for a guaranteed alignment of AIs with human values. In the future, we shall have truly safe AIs that generates verifiable "proofs" alongside any statements they make.}
 
 \section{Introduction}
+
+This paper describe a rather rudimentary but import problem. The authors are not aware of similar work. If there exists such, please inform!
 
 Human can never fully trust large language models as much as they can trust traditional software. The reason is simple: they just have too many parameters!
 
@@ -69,11 +72,59 @@ In this paper, we intend to close this gap of reliability between AI and traditi
 	\item Development/Training. We discuss the optimal way to construct such a verification system. Lessons from expert system tell us scalability is essential. We propose multiple ways of construction that take minimal human labor (but maybe more AI labor), and easy to update and maintain (could be some form of gradient descent, etc.)
 \end{itemize}
 
-\section{A Permissive Logical Foundation Easy to Verify}
+\section{Abstract Proof Machine}
+
+Here we describe an abstract proof machine that avoids the details of logical foundation yet suffices for ensuing discussions.
+
+It's necessary to avoid early specification of logical foundation because we are going to a much more permissive logical foundation than any existing ones, and soundness of the system can be empirically guaranteed without resorting to a mathematical proof, thus foundation is irrelevant. (todo: include in appendix more discussions about logic foundation)
+
+An abstract proof machine consists of a append-only tape of statements as the state, and a small finite set of rules of generating new statements. Let $\mathfrak{S}$ be the set (type) of all possible statements (including \code{true}, \code{false}), then formally a rule $r$ of $n$ arms is a trivially computable function
+\begin{equation}
+\underbrace{\mathfrak{S}\times\cdots\times \mathfrak{S}}_{n\text{ copies}}\to \mathfrak{S}\enspace.
+\end{equation}
+
+A state of the machine is then a finite sequence $s_1,\cdots, s_k\in \mathfrak{S}$. One can apply a rule $r$ of $n$ arms over $s_{i_1},\cdots, s_{i_n}$, then the machine changes by appending $s_{k+1} = r(s_{i_1},\cdots, s_{i_n})$ to the sequence.
+
+We require that any statement keeps track of the way it's constructed, i.e., the total dependencies and dependency tree of a statement can be seen as a function of the statement.
 
 
+\begin{rmk} We have a few remarks,
+	
+	\begin{itemize}
+		\item Rather than implying that any statement on the tape is true, the machine is implying that a statement on the tape is true if all its dependencies are true, giving us flexibilities important for its broader applications. We refer to the collection of the rules used for deriving that statement as its proof.
+		\item Unlike theorem proving and formal verification, here \textbf{proof details are relevant}! Different ways of constructing a proof lead to different dependencies, the validity of which is depending ultimately on hidden and possibly changing assumptions.
+		\item Everything can be viewed as category, or even topos. However, that viewpoint forgets the computation aspects. Verifications systems should be designed with ease of computation in mind, just like type systems.
+	\end{itemize}
+\end{rmk}
 
-\section{}
+Note that we have described things with great abstraction, so that we need to fill in more details for examples.
+
+todo: describe some common rules and statement forms for all following examples.
+
+\begin{eg}[basic maths] We could have a tape like this, with $x$ a symbol of type $\texttt{Nat}$, i.e. natural numbers,
+\begin{verbatim}
+	#0: x = 1 (intro)
+	#1: x = 2 (intro)
+	#2: x + 1 = 2 (derived from #0)
+	#3: 1 = 2 (derive from #0, #1)
+\end{verbatim}
+\end{eg}
+
+\begin{eg}[probabilistic maths] We could have a tape like this, with $X$ a symbol of type $\texttt{Nat}$, i.e. natural numbers,
+\begin{verbatim}
+	#0: with probability >= 0.9, X = 1 (intro)
+	#1: with probability >= 0.2, X = 2 (intro)
+	#2: with probability >= 0.9, X + 1 = 2 (derived from #0)
+	#3: with probability >= 0.1, 1 = 2 (derived from #0, #1)
+\end{verbatim}
+\end{eg}
+
+\begin{eg}[blurry math]
+	
+\end{eg}
+\section{Alignment as Optimization Problem}
+
+\section{Statistical Guarantees}
 
 
 
